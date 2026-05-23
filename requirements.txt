@@ -1,0 +1,7 @@
+pyvmomi>=8.0.0
+pysnmp>=6.0.0
+reflex>=0.9.0
+mcp>=1.0.0
+pyyaml>=6.0
+requests>=2.31.0
+httpx>=0.27.0

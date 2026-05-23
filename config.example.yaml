@@ -1,0 +1,34 @@
+vcenter:
+  host: "vcenter.example.com"
+  port: 443
+  username: "admin@vsphere.local"
+  password: ""                      # 用環境變數 VCENTER_PASSWORD
+  ssl_verify: false
+
+clusters:
+  - name: "MyCluster"
+    priority_vms:
+      - "DNS-Server"                # 倒數第二關（先於 vCenter）
+      - "vCenter Server"            # 絕對最後關（關了就沒 API 了）
+    exclude_vms:
+      - "vCLS-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"   # vSphere Cluster Service，勿動
+
+ups:
+  # NUT (nutdrv_qx via USB)
+  nut_ups_name: "myups"             # upsc 顯示的 UPS 名稱
+  nut_host: "localhost"
+  nut_port: 3493
+
+thresholds:
+  poll_interval_sec: 30
+  warning_minutes: 45               # 開始通知 on-call
+  critical_minutes: 27              # 自動 suspend VM（動態閾值優先，由 shutdown_estimator 計算）
+  emergency_minutes: 5              # 跳過確認，全自動關機
+
+notifications:
+  telegram_token: ""                # 建議用 config/.env 設定（TG_TOKEN=xxx）
+  telegram_chat_id: ""
+
+mcp:
+  host: "127.0.0.1"
+  port: 9100

@@ -1,0 +1,36 @@
+services:
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    environment:
+      - VCENTER_PASSWORD=${VCENTER_PASSWORD}
+    ports:
+      - "9100:9100"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    environment:
+      - VCENTER_PASSWORD=${VCENTER_PASSWORD}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    restart: unless-stopped
+
+  ups_monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    command: python daemon.py
+    environment:
+      - VCENTER_PASSWORD=${VCENTER_PASSWORD}
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./data:/app/data          # ML 訓練資料持久化
+    restart: unless-stopped
